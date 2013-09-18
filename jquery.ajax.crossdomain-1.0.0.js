@@ -5,7 +5,7 @@
     @date 09-18-2013
     @version 1.0.0
 
-    Simple plugin with jquery to do ajax on Cross Domain, that do the request accord with the browser.
+    Simple plugin with jquery to do Cross Domain ajax requests.
 
     Simple call of function 
 
