@@ -5,29 +5,36 @@
     @date 09-18-2013
     @version 1.0.0
 
-    Simple plugin with jquery to do Cross Domain ajax requests.
+    Simple plugin with jquery to do Cross Domain ajax Requests.
 
     Simple call of function 
 
     $.ajaxCrossDomain(
-        {url : 'http://www.google.com'}
+        {
+            url : 'http://www.google.com',
+            callback : function() {
+                console.log('Success');
+            }
+        }
     );
 
     Settings  :
         typeRequisition - Can be 'Get' or 'Post'
         url - URL that provide the response with the data
         returnData - Type of data returned, can be 'text' or 'json'
-
+        callback - Function thar return the response with success
 */
 
 (function($){
-    $.ajaxCrossDomain = function(settings) {
+    $.ajaxCrossDomain = function(settings, callback) {
         var browser = navigator.userAgent;
-
         var config = {
             typeRequisition : 'GET',
             url : '',
-            returnData : 'json'
+            returnData : 'json',
+            callback : function() {
+
+            }
         };
 
         if (settings){$.extend(config, settings);}
@@ -37,10 +44,12 @@
                 var xdr = new XDomainRequest();
                 if (xdr) {
                     xdr.onload = function() {
-                        return $.parseJSON(xdr.responseText); 
+                        if (typeof config.callback == 'function') { 
+                            config.callback(this); 
+                        }
                     };
                     xdr.onerror = function() {
-                        return 'The request fail!';
+                        console.log('The request fail!');
                     };
                     xdr.open('GET', config.url);
                     xdr.send();
@@ -52,10 +61,12 @@
                 url: config.url,
                 dataType: config.returnData,
                 success: function(data, textStatus, jqXHR) {
-                    return data;
-                },
+                    if (typeof config.callback == 'function') { 
+                        config.callback(data); 
+                    }
+                },    
                 error: function(jqXHR, textStatus, errorThrown) {
-                    return 'The request fail!'
+                    console.log('The request fail!');
                 }
             });
         }
