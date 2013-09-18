@@ -52,7 +52,6 @@
                 url: config.url,
                 dataType: config.returnData,
                 success: function(data, textStatus, jqXHR) {
-                    console.log(data);
                     return data;
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
